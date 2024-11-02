@@ -11,10 +11,14 @@ import ar.edu.unlam.instituto.cursos.Curso;
 import ar.edu.unlam.instituto.cursos.Division;
 import ar.edu.unlam.instituto.cursos.Grado;
 import ar.edu.unlam.instituto.cursos.Sala;
+import ar.edu.unlam.instituto.enums.Experiencia;
 import ar.edu.unlam.instituto.enums.Nivel;
 import ar.edu.unlam.instituto.interfaces.Jardin;
 import ar.edu.unlam.instituto.interfaces.Primaria;
 import ar.edu.unlam.instituto.interfaces.Secundaria;
+import ar.edu.unlam.instituto.persona.Alumno;
+import ar.edu.unlam.instituto.persona.Docente;
+import ar.edu.unlam.instituto.persona.Persona;
 
 public class Entrga_4DisenioClases {
 
@@ -76,6 +80,30 @@ public class Entrga_4DisenioClases {
 		assertNotNull(instituto);
 		String vo= codigoCurso;
 		String ve = ((Curso) division).getCodigoCurso();
+		assertEquals(ve,vo);
+	}
+	@Test //#4
+	public void queDadoUnaPersonaSePuedaSerAlumnoODocenteConCaracteristicasPropias() {
+		//ENTRADA
+		
+		String nombre="Franco",nombre1="Luis",apellido="Colapinto",apellido1="Sanchez";
+		Integer dni=111111,dni1=222222;
+		LocalDate fechaDeNacimiento=LocalDate.of(1995, 12, 12),fechaDeNacimiento1=LocalDate.of(2020, 10, 10);
+		Experiencia experiencia= Experiencia.PRIMER_GRADO;
+		Persona alumno;
+		Integer edad; 
+		Persona docente;
+		
+		//PREPARACION
+		alumno=new Alumno(dni,nombre,apellido,fechaDeNacimiento);		
+		docente=new Docente(dni1,nombre1,apellido1,fechaDeNacimiento1,experiencia);
+		edad=alumno.getEdad();
+		
+		//VALIDACION
+		Integer vo1= edad;
+		Integer ve1=alumno.getEdad();
+		Experiencia vo= ((Docente) docente).getExperiencia();
+		Experiencia ve = experiencia.PRIMER_GRADO;
 		assertEquals(ve,vo);
 	}
 
