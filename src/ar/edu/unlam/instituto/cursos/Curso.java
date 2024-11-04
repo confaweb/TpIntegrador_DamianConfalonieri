@@ -3,8 +3,10 @@ package ar.edu.unlam.instituto.cursos;
 import java.util.Objects;
 
 import ar.edu.unlam.instituto.enums.Nivel;
+import ar.edu.unlam.instituto.exceptions.AlumnoInexistenteException;
 import ar.edu.unlam.instituto.exceptions.EdadAlumnoFueraDeRangoException;
 import ar.edu.unlam.instituto.persona.Alumno;
+import ar.edu.unlam.instituto.persona.Persona;
 
 public abstract class Curso implements Comparable <Curso>{
 	
@@ -61,6 +63,7 @@ public abstract class Curso implements Comparable <Curso>{
 	}
 	
 	public abstract void asignarCursoParaAlumno(Alumno alumno)throws EdadAlumnoFueraDeRangoException;
+	public abstract Persona buscarAlumnoPorDni(Integer dni)throws AlumnoInexistenteException;
 
 	@Override
 	public int compareTo(Curso o) {
@@ -84,4 +87,6 @@ public abstract class Curso implements Comparable <Curso>{
 		Curso other = (Curso) obj;
 		return Objects.equals(codigoCurso, other.codigoCurso);
 	}
+
+	
 }

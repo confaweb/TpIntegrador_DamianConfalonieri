@@ -80,20 +80,18 @@ public class Entrga_4CasosJardin {
 		
 	}
 	@Test //#4
-	public void BuscarAlumnoPorDniEnINstituto() throws EdadAlumnoFueraDeRangoException, AlumnoInexistenteException {
+	public void BuscarAlumnoPorDniEnCurso() throws EdadAlumnoFueraDeRangoException, AlumnoInexistenteException {
 		//INCIO
 		
-		Alumno alumno;
-		Alumno alumno1;
-		Alumno alumno2;
-		Sala sala;
+		Alumno alumno,alumno1,alumno2;
+		Sala sala,sala1,sala2;		
 		Instituto instituto;
-		String codigoCurso="J01",nombre="Facundo",nombre1="Hernan",nombre2 ="Javier",apellido="Colapinto",
+		String codigoCurso="J01",codigoCurso1="J02",codigoCurso2="J03",nombre="Facundo",nombre1="Hernan",nombre2 ="Javier",apellido="Colapinto",
 				apellido1 ="Hamilton",apellido2="Verstappen",nombreInstituto="13 de Julio";
 		Integer dni=111111, dni1=222222,dni2=333333,numero=01,distritoEducativo=13;
 		Integer cicloLectivo=LocalDate.now().getYear();
 		LocalDate fechaDeNacimiento=LocalDate.of(2020,10, 10),fechaDeNacimiento1=LocalDate.of(2019,10, 10),fechaDeNacimiento2=LocalDate.of(2021,10, 10);
-		Nivel nivel=Nivel.AZUL;
+		Nivel nivel=Nivel.AZUL,nivel1=Nivel.VERDE,nivel2=Nivel.ROJA;
 		//PREPARACION
 		instituto =new Instituto(nombreInstituto,numero,distritoEducativo);
 		
@@ -102,25 +100,21 @@ public class Entrga_4CasosJardin {
 		alumno2 =new Alumno(dni2,nombre2,apellido2,fechaDeNacimiento2);
 		
 		sala =new Sala(codigoCurso, cicloLectivo, nivel);
+		sala1 =new Sala(codigoCurso1, cicloLectivo, nivel1);
+		sala2 =new Sala(codigoCurso2, cicloLectivo, nivel2);
 		
 		sala.asignarCursoParaAlumno(alumno);
 		sala.asignarCursoParaAlumno(alumno1);
-		sala.asignarCursoParaAlumno(alumno2);
+		sala.asignarCursoParaAlumno(alumno2);	
 		
-		assertTrue(instituto.inscribirAlumno(alumno));
-		assertTrue(instituto.inscribirAlumno(alumno1));
-		assertTrue(instituto.inscribirAlumno(alumno2));
 		
-		assertEquals(alumno.getApellido(),instituto.getRegistroGralAlumnos().iterator().next().getApellido());
-		assertEquals(alumno.getApellido(),instituto.getRegistroGralAlumnos().iterator().next().getApellido());
-		assertEquals(alumno.getApellido(),instituto.getRegistroGralAlumnos().iterator().next().getApellido());
 		
 		//VALIDACION
 		
+		assertEquals(alumno,sala.buscarAlumnoPorDni(dni));
+		assertEquals(alumno1,sala.buscarAlumnoPorDni(dni1));
+		assertEquals(alumno2,sala.buscarAlumnoPorDni(dni2));
 		
-		assertEquals(alumno,instituto.buscarAlumnoPorDni(dni));
-		assertEquals(alumno1,instituto.buscarAlumnoPorDni(dni1));
-		assertEquals(alumno2,instituto.buscarAlumnoPorDni(dni2));
 	}
 	@Test //#5
 	(expected=AlumnoInexistenteException.class)
@@ -162,7 +156,7 @@ public class Entrga_4CasosJardin {
 		//VALIDACION
 		
 		
-		assertEquals(alumno,instituto.buscarAlumnoPorDni(444444));
+		assertEquals(alumno,sala.buscarAlumnoPorDni(444444));
 		
 	}
 	@Test //#6
@@ -197,10 +191,10 @@ public class Entrga_4CasosJardin {
 		assertTrue(instituto.inscribirAlumno(alumno1));
 		assertTrue(instituto.inscribirAlumno(alumno2));
 		//VALIDACION
+		assertTrue(sala.getListaAlumnosSalaVerde().contains(alumno));
+		assertTrue(sala.getListaAlumnosSalaRoja().contains(alumno1));
+		assertTrue(sala.getListaAlumnosSalaAzul().contains(alumno2));
 		
-		assertEquals(alumno.getApellido(),instituto.getRegistroGralAlumnos().iterator().next().getApellido());
-		assertEquals(alumno.getApellido(),instituto.getRegistroGralAlumnos().iterator().next().getApellido());
-		assertEquals(alumno.getApellido(),instituto.getRegistroGralAlumnos().iterator().next().getApellido());
 		
 		assertEquals(alumno.getApellido(),sala.getListaAlumnosSalaVerde().iterator().next().getApellido());
 		assertEquals(alumno1.getApellido(),sala.getListaAlumnosSalaRoja().iterator().next().getApellido());

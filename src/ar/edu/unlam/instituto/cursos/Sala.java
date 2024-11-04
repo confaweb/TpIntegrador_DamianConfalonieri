@@ -4,9 +4,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import ar.edu.unlam.instituto.enums.Nivel;
+import ar.edu.unlam.instituto.exceptions.AlumnoInexistenteException;
 import ar.edu.unlam.instituto.exceptions.EdadAlumnoFueraDeRangoException;
 import ar.edu.unlam.instituto.interfaces.Jardin;
 import ar.edu.unlam.instituto.persona.Alumno;
+import ar.edu.unlam.instituto.persona.Persona;
 
 public class Sala extends Curso implements Jardin {
 
@@ -106,6 +108,31 @@ public class Sala extends Curso implements Jardin {
 
 		return salaAsignada;
 
+	}
+
+
+	@Override
+	public Persona buscarAlumnoPorDni(Integer dni) throws AlumnoInexistenteException {
+	    for (Alumno alumno : listaAlumnosSalaAzul) {
+	        if (alumno.getDni().equals(dni)) {
+	            return alumno;
+	        }
+	    }
+	    
+	    for (Alumno alumno : listaAlumnosSalaVerde) {
+	        if (alumno.getDni().equals(dni)) {
+	            return alumno;
+	        }
+	    }
+	    
+	    for (Alumno alumno : listaAlumnosSalaRoja) {
+	        if (alumno.getDni().equals(dni)) {
+	            return alumno;
+	        }
+	    }
+	    
+	    // If the loop completes without finding the student
+	    throw new AlumnoInexistenteException("El DNI no se encuentra inscrito en ningún curso de Jardín.");
 	}
 
 }
