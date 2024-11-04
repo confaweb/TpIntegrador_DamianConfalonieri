@@ -1,8 +1,12 @@
 package ar.edu.unlam.instituto.cursos;
 
-import ar.edu.unlam.instituto.enums.Nivel;
+import java.util.Objects;
 
-public abstract class Curso {
+import ar.edu.unlam.instituto.enums.Nivel;
+import ar.edu.unlam.instituto.exceptions.EdadAlumnoFueraDeRangoException;
+import ar.edu.unlam.instituto.persona.Alumno;
+
+public abstract class Curso implements Comparable <Curso>{
 	
 	private String codigoCurso;
 	private Integer cicloLectivo;
@@ -54,5 +58,30 @@ public abstract class Curso {
 	 */
 	public void setNivel(Nivel nivel) {
 		this.nivel = nivel;
+	}
+	
+	public abstract void asignarCursoParaAlumno(Alumno alumno)throws EdadAlumnoFueraDeRangoException;
+
+	@Override
+	public int compareTo(Curso o) {
+		// TODO Auto-generated method stub
+		return this.codigoCurso.compareTo(o.getCodigoCurso());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(codigoCurso);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Curso other = (Curso) obj;
+		return Objects.equals(codigoCurso, other.codigoCurso);
 	}
 }

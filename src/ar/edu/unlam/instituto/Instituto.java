@@ -1,15 +1,23 @@
 package ar.edu.unlam.instituto;
 
+import java.util.Set;
+import java.util.TreeSet;
+
+import ar.edu.unlam.instituto.exceptions.EdadAlumnoFueraDeRangoException;
+import ar.edu.unlam.instituto.persona.Alumno;
+
 public class Instituto {
 
 	private String nombreInstituto;
 	private Integer numero;
 	private Integer distritoEducativo;
+	private Set<Alumno> registroGralAlumnos;
 
 	public Instituto(String nombreInstituto, Integer numero, Integer distritoEducativo) {
-		this.nombreInstituto=nombreInstituto;
-		this.numero=numero;
-		this.distritoEducativo=distritoEducativo;
+		this.nombreInstituto = nombreInstituto;
+		this.numero = numero;
+		this.distritoEducativo = distritoEducativo;
+		registroGralAlumnos = new TreeSet<Alumno>();
 	}
 
 	public String getNombreInstituto() {
@@ -36,10 +44,34 @@ public class Instituto {
 		this.distritoEducativo = distritoEducativo;
 	}
 
+	/**
+	 * @return the registroGralAlumnos
+	 */
+	public Set<Alumno> getRegistroGralAlumnos() {
+		return registroGralAlumnos;
+	}
+
+	/**
+	 * @param registroGralAlumnos the registroGralAlumnos to set
+	 */
+	public void setRegistroGralAlumnos(Set<Alumno> registroGralAlumnos) {
+		this.registroGralAlumnos = registroGralAlumnos;
+	}
+
 	@Override
 	public String toString() {
 		return "Instituto [nombreInstituto=" + nombreInstituto + ", numero=" + numero + ", distritoEducativo="
 				+ distritoEducativo + "]";
+	}
+
+	public Boolean inscribirAlumno(Alumno alumno) throws EdadAlumnoFueraDeRangoException {
+		Boolean alumnoInscripto = false;
+		if (alumno.getEdad() > 2)
+			alumnoInscripto = registroGralAlumnos.add(alumno);
+		else
+			throw new EdadAlumnoFueraDeRangoException(
+					"La Edad de la Persona no alcanza la edad minima para la incripcion");
+		return alumnoInscripto;
 	}
 
 }
