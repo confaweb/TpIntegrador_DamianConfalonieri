@@ -47,8 +47,7 @@ public class Entrga_4CasosInscripcion {
 		//PREPARACION
 		instituto =new Instituto(nombreInstituto, numero, distritoEducativo);
 		alumno =new Alumno(dni,nombre,apellido,fechaDeNacimiento);
-		sala =new Sala(codigoCurso, cicloLectivo, nivel);
-		
+		sala =new Sala(codigoCurso, cicloLectivo, nivel);		
 		sala.asignarCursoParaAlumno(alumno);
 		//VALIDACION
 		

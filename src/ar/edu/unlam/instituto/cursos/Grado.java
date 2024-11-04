@@ -22,7 +22,7 @@ public class Grado extends Curso implements Primaria {
 
 	@Override
 	public void asignarCursoParaAlumno(Alumno alumno) throws EdadAlumnoFueraDeRangoException {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
