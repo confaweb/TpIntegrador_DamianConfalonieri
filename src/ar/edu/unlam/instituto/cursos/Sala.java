@@ -26,7 +26,7 @@ public class Sala extends Curso implements Jardin {
 		this.listaAlumnosSalaAzul = new TreeSet<Alumno>();
 		this.listaAlumnosSalaRoja = new TreeSet<Alumno>();
 	}
-	
+
 	public Set<Alumno> getListaAlumnosSalaVerde() {
 		return listaAlumnosSalaVerde;
 	}
@@ -34,24 +34,29 @@ public class Sala extends Curso implements Jardin {
 	public void setListaAlumnosSalaVerde(Set<Alumno> listaAlumnosSalaVerde) {
 		this.listaAlumnosSalaVerde = listaAlumnosSalaVerde;
 	}
+
 	public Set<Alumno> getListaAlumnosSalaAzul() {
 		return listaAlumnosSalaAzul;
 	}
+
 	public void setListaAlumnosSalaAzul(Set<Alumno> listaAlumnosSalaAzul) {
 		this.listaAlumnosSalaAzul = listaAlumnosSalaAzul;
 	}
+
 	public Set<Alumno> getListaAlumnosSalaRoja() {
 		return listaAlumnosSalaRoja;
 	}
+
 	public void setListaAlumnosSalaRoja(Set<Alumno> listaAlumnosSalaRoja) {
 		this.listaAlumnosSalaRoja = listaAlumnosSalaRoja;
 	}
 
 	@Override
 	public void asignarCursoParaAlumno(Alumno alumno) throws EdadAlumnoFueraDeRangoException {
-		if (alumno.getEdad() < 6)
+		if (alumno.getEdad() < 6) {
+			this.listaAlumnosPorCurso.add(alumno);
 			this.asignarSala(alumno);
-		else
+		} else
 			throw new EdadAlumnoFueraDeRangoException("Edad fuera de Rango para Jardin");
 	}
 
@@ -92,51 +97,51 @@ public class Sala extends Curso implements Jardin {
 
 	}
 
-
 	@Override
 	public Persona buscarAlumnoPorDni(Integer dni) throws AlumnoInexistenteException {
-	    for (Alumno alumno : listaAlumnosSalaAzul) {
-	        if (alumno.getDni().equals(dni)) {
-	            return alumno;
-	        }
-	    }
-	    
-	    for (Alumno alumno : listaAlumnosSalaVerde) {
-	        if (alumno.getDni().equals(dni)) {
-	            return alumno;
-	        }
-	    }
-	    
-	    for (Alumno alumno : listaAlumnosSalaRoja) {
-	        if (alumno.getDni().equals(dni)) {
-	            return alumno;
-	        }
-	    }
-	    
-	    // Si el dni no se encuentra en la lista de alumnos de los cursos
-	    throw new AlumnoInexistenteException("El DNI no se encuentra inscripto en ningún curso de Jardín.");
+		for (Alumno alumno : listaAlumnosSalaAzul) {
+			if (alumno.getDni().equals(dni)) {
+				return alumno;
+			}
+		}
+
+		for (Alumno alumno : listaAlumnosSalaVerde) {
+			if (alumno.getDni().equals(dni)) {
+				return alumno;
+			}
+		}
+
+		for (Alumno alumno : listaAlumnosSalaRoja) {
+			if (alumno.getDni().equals(dni)) {
+				return alumno;
+			}
+		}
+
+		// Si el dni no se encuentra en la lista de alumnos de los cursos
+		throw new AlumnoInexistenteException("El DNI no se encuentra inscripto en ningún curso de Jardín.");
 	}
 
 	@Override
 	public Boolean verificarCantidadDocentesACargo() throws CantidadDocentesInsuficienteException {
-		Boolean docentesVerificados=false;
-		if(this.getDocestesACargo().size()<2)
+		Boolean docentesVerificados = false;
+		if (this.getDocestesACargo().size() < 2)
 			throw new CantidadDocentesInsuficienteException(getCodigoCurso());
 		else
-			docentesVerificados=true;
+			docentesVerificados = true;
 		return docentesVerificados;
 	}
 
 	@Override
-	public Boolean asignarDocentesACargo(Docente docente)throws DocenteSinExperienciaAcreditadaException {
-		Boolean docenteAsignado=false;;
+	public Boolean asignarDocentesACargo(Docente docente) throws DocenteSinExperienciaAcreditadaException {
+		Boolean docenteAsignado = false;
+		;
 		if (docente.getExperiencia().equals(Experiencia.JARDIN))
-			docenteAsignado=this.getDocestesACargo().add(docente);
+			docenteAsignado = this.getDocestesACargo().add(docente);
 		else
-		 throw new DocenteSinExperienciaAcreditadaException("El docente no acredita experiencia requerida");
-		
+			throw new DocenteSinExperienciaAcreditadaException("El docente no acredita experiencia requerida");
+
 		return docenteAsignado;
-		
+
 	}
 
 }

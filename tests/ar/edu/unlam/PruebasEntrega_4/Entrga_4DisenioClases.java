@@ -178,22 +178,84 @@ public class Entrga_4DisenioClases {
 		
 	}
 	@Test // #7
-	public void queUnAlumnoPuedaRegistrarSuAsistenciaAClase()  {
+	public void queUnAlumnoPuedaRegistrarPresenteSuAsistenciaAClase() throws EdadAlumnoFueraDeRangoException,AlumnoInexistenteException  {
 		// INCIO
 		
 		Alumno alumno;
-		String  nombre = "Facundo", apellido = "Colapinto";
-		Integer  dni = 111111;
+		Curso curso;
+		String  nombre = "Facundo", apellido = "Colapinto",codigoCurso="j01";
+		Integer  dni = 111111,cicloLectivo=LocalDate.now().getYear();
 		Boolean presente = true;
 		LocalDate fechaDeNacimiento = LocalDate.of(2020, 10, 10),fecha=LocalDate.now();
+		Nivel nivel=Nivel.AZUL;
 		
 		// PREPARACION
 		
 		alumno = new Alumno(dni, nombre, apellido, fechaDeNacimiento);
+		curso=new Sala(codigoCurso, cicloLectivo, nivel);
+		curso.asignarCursoParaAlumno(alumno);
+		assertTrue(alumno.asistirAClase(curso,fecha));
 		// VALIDACION
-		assertTrue(alumno.registrarAsistencia(fecha,presente));
-		
+		Boolean ve=true;
+		Boolean vo = alumno.getAsistencia().get(fecha);
+		assertEquals(ve,vo);
 	}
+	@Test // #7
+	public void queUnAlumnoPuedaRegistrarAusenteSuAsistenciaAClase() throws EdadAlumnoFueraDeRangoException,AlumnoInexistenteException  {
+		// INCIO
+		
+		Alumno alumno;
+		Curso curso;
+		String  nombre = "Facundo", apellido = "Colapinto",codigoCurso="j01";
+		Integer  dni = 111111,cicloLectivo=LocalDate.now().getYear();
+		LocalDate fechaDeNacimiento = LocalDate.of(2020, 10, 10),fecha=LocalDate.now();
+		Nivel nivel=Nivel.AZUL;
+		
+		// PREPARACION
+		
+		alumno = new Alumno(dni, nombre, apellido, fechaDeNacimiento);
+		curso=new Sala(codigoCurso, cicloLectivo, nivel);
+		curso.asignarCursoParaAlumno(alumno);
+		assertFalse(alumno.faltarAClase(curso,fecha));
+		// VALIDACION
+		Boolean ve=false;
+		Boolean vo = alumno.getAsistencia().get(fecha);
+		assertEquals(ve,vo);
+	}
+//	@Test // #8
+//	public void queUnAlumnoPuedaAsistirAClase()  {
+//		// INCIO
+//		
+//		Alumno alumno;
+//		String  nombre = "Facundo", apellido = "Colapinto";
+//		Integer  dni = 111111;
+//		Boolean presente = true;
+//		LocalDate fechaDeNacimiento = LocalDate.of(2020, 10, 10),fecha=LocalDate.now();
+//		
+//		// PREPARACION
+//		
+//		alumno = new Alumno(dni, nombre, apellido, fechaDeNacimiento);
+//		// VALIDACION
+//		assertTrue(alumno.asistirAClase(fecha));
+//		
+//	}
+//	@Test // #9
+//	public void queUnAlumnoPuedaCalculaSuAsistencia()  {
+//		// INCIO
+//		
+//		Alumno alumno;
+//		String  nombre = "Facundo", apellido = "Colapinto";
+//		Integer  dni = 111111;
+//		Boolean presente = true;
+//		LocalDate fechaDeNacimiento = LocalDate.of(2020, 10, 10),fecha=LocalDate.now();
+//		
+//		// PREPARACION
+//		
+//		alumno = new Alumno(dni, nombre, apellido, fechaDeNacimiento);
+//		// VALIDACION
+//		assertTrue(alumno.registrarAsistencia(fecha,presente));
+//		
+//	}
 
 
 

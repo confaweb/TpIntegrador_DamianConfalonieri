@@ -3,6 +3,7 @@ package ar.edu.unlam.instituto.cursos;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 
 import ar.edu.unlam.instituto.enums.Nivel;
 import ar.edu.unlam.instituto.exceptions.AlumnoInexistenteException;
@@ -18,6 +19,7 @@ public abstract class Curso implements Comparable <Curso>{
 	private String codigoCurso;
 	private Integer cicloLectivo;
 	private Nivel nivel;
+	Set<Alumno> listaAlumnosPorCurso;
 	private Set <Docente> docestesACargo;
 
 	public Curso(String codigoCurso, Integer cicloLectivo, Nivel nivel) {
@@ -25,6 +27,7 @@ public abstract class Curso implements Comparable <Curso>{
 		this.cicloLectivo=cicloLectivo;
 		this.nivel=nivel;
 		this.setDocestesACargo(new HashSet<Docente>());
+		this.listaAlumnosPorCurso=new TreeSet <Alumno>();
 	}
 
 	/**
@@ -75,6 +78,20 @@ public abstract class Curso implements Comparable <Curso>{
 
 	public void setDocestesACargo(Set <Docente> docestesACargo) {
 		this.docestesACargo = docestesACargo;
+	}
+
+	/**
+	 * @return the listaAlumnosPorCurso
+	 */
+	public Set<Alumno> getListaAlumnosPorCurso() {
+		return listaAlumnosPorCurso;
+	}
+
+	/**
+	 * @param listaAlumnosPorCurso the listaAlumnosPorCurso to set
+	 */
+	public void setListaAlumnosPorCurso(Set<Alumno> listaAlumnosPorCurso) {
+		this.listaAlumnosPorCurso = listaAlumnosPorCurso;
 	}
 
 	public abstract void asignarCursoParaAlumno(Alumno alumno)throws EdadAlumnoFueraDeRangoException;
