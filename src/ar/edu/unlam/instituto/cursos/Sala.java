@@ -3,11 +3,15 @@ package ar.edu.unlam.instituto.cursos;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ar.edu.unlam.instituto.enums.Experiencia;
 import ar.edu.unlam.instituto.enums.Nivel;
 import ar.edu.unlam.instituto.exceptions.AlumnoInexistenteException;
+import ar.edu.unlam.instituto.exceptions.CantidadDocentesInsuficienteException;
+import ar.edu.unlam.instituto.exceptions.DocenteSinExperienciaAcreditadaException;
 import ar.edu.unlam.instituto.exceptions.EdadAlumnoFueraDeRangoException;
 import ar.edu.unlam.instituto.interfaces.Jardin;
 import ar.edu.unlam.instituto.persona.Alumno;
+import ar.edu.unlam.instituto.persona.Docente;
 import ar.edu.unlam.instituto.persona.Persona;
 
 public class Sala extends Curso implements Jardin {
@@ -22,45 +26,23 @@ public class Sala extends Curso implements Jardin {
 		this.listaAlumnosSalaAzul = new TreeSet<Alumno>();
 		this.listaAlumnosSalaRoja = new TreeSet<Alumno>();
 	}
-
-	/**
-	 * @return the listaAlumnosSalaVerde
-	 */
+	
 	public Set<Alumno> getListaAlumnosSalaVerde() {
 		return listaAlumnosSalaVerde;
 	}
 
-	/**
-	 * @param listaAlumnosSalaVerde the listaAlumnosSalaVerde to set
-	 */
 	public void setListaAlumnosSalaVerde(Set<Alumno> listaAlumnosSalaVerde) {
 		this.listaAlumnosSalaVerde = listaAlumnosSalaVerde;
 	}
-
-	/**
-	 * @return the listaAlumnosSalaAzul
-	 */
 	public Set<Alumno> getListaAlumnosSalaAzul() {
 		return listaAlumnosSalaAzul;
 	}
-
-	/**
-	 * @param listaAlumnosSalaAzul the listaAlumnosSalaAzul to set
-	 */
 	public void setListaAlumnosSalaAzul(Set<Alumno> listaAlumnosSalaAzul) {
 		this.listaAlumnosSalaAzul = listaAlumnosSalaAzul;
 	}
-
-	/**
-	 * @return the listaAlumnosSalaRoja
-	 */
 	public Set<Alumno> getListaAlumnosSalaRoja() {
 		return listaAlumnosSalaRoja;
 	}
-
-	/**
-	 * @param listaAlumnosSalaRoja the listaAlumnosSalaRoja to set
-	 */
 	public void setListaAlumnosSalaRoja(Set<Alumno> listaAlumnosSalaRoja) {
 		this.listaAlumnosSalaRoja = listaAlumnosSalaRoja;
 	}
@@ -131,8 +113,30 @@ public class Sala extends Curso implements Jardin {
 	        }
 	    }
 	    
-	    // If the loop completes without finding the student
-	    throw new AlumnoInexistenteException("El DNI no se encuentra inscrito en ningún curso de Jardín.");
+	    // Si el dni no se encuentra en la lista de alumnos de los cursos
+	    throw new AlumnoInexistenteException("El DNI no se encuentra inscripto en ningún curso de Jardín.");
+	}
+
+	@Override
+	public Boolean verificarCantidadDocentesACargo() throws CantidadDocentesInsuficienteException {
+		Boolean docentesVerificados=false;
+		if(this.getDocestesACargo().size()<2)
+			throw new CantidadDocentesInsuficienteException(getCodigoCurso());
+		else
+			docentesVerificados=true;
+		return docentesVerificados;
+	}
+
+	@Override
+	public Boolean asignarDocentesACargo(Docente docente)throws DocenteSinExperienciaAcreditadaException {
+		Boolean docenteAsignado=false;;
+		if (docente.getExperiencia().equals(Experiencia.JARDIN))
+			docenteAsignado=this.getDocestesACargo().add(docente);
+		else
+		 throw new DocenteSinExperienciaAcreditadaException("El docente no acredita experiencia requerida");
+		
+		return docenteAsignado;
+		
 	}
 
 }

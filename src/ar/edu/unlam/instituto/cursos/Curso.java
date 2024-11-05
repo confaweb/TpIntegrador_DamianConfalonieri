@@ -1,11 +1,16 @@
 package ar.edu.unlam.instituto.cursos;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import ar.edu.unlam.instituto.enums.Nivel;
 import ar.edu.unlam.instituto.exceptions.AlumnoInexistenteException;
+import ar.edu.unlam.instituto.exceptions.CantidadDocentesInsuficienteException;
+import ar.edu.unlam.instituto.exceptions.DocenteSinExperienciaAcreditadaException;
 import ar.edu.unlam.instituto.exceptions.EdadAlumnoFueraDeRangoException;
 import ar.edu.unlam.instituto.persona.Alumno;
+import ar.edu.unlam.instituto.persona.Docente;
 import ar.edu.unlam.instituto.persona.Persona;
 
 public abstract class Curso implements Comparable <Curso>{
@@ -13,11 +18,13 @@ public abstract class Curso implements Comparable <Curso>{
 	private String codigoCurso;
 	private Integer cicloLectivo;
 	private Nivel nivel;
+	private Set <Docente> docestesACargo;
 
 	public Curso(String codigoCurso, Integer cicloLectivo, Nivel nivel) {
 		this.codigoCurso=codigoCurso;
 		this.cicloLectivo=cicloLectivo;
 		this.nivel=nivel;
+		this.setDocestesACargo(new HashSet<Docente>());
 	}
 
 	/**
@@ -62,8 +69,18 @@ public abstract class Curso implements Comparable <Curso>{
 		this.nivel = nivel;
 	}
 	
+	public Set <Docente> getDocestesACargo() {
+		return docestesACargo;
+	}
+
+	public void setDocestesACargo(Set <Docente> docestesACargo) {
+		this.docestesACargo = docestesACargo;
+	}
+
 	public abstract void asignarCursoParaAlumno(Alumno alumno)throws EdadAlumnoFueraDeRangoException;
 	public abstract Persona buscarAlumnoPorDni(Integer dni)throws AlumnoInexistenteException;
+	public abstract Boolean verificarCantidadDocentesACargo()throws CantidadDocentesInsuficienteException;
+	public abstract Boolean asignarDocentesACargo(Docente docente)throws DocenteSinExperienciaAcreditadaException;
 
 	@Override
 	public int compareTo(Curso o) {
