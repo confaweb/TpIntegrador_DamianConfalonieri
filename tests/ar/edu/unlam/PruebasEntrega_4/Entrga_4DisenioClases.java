@@ -256,7 +256,7 @@ public class Entrga_4DisenioClases {
 		
 		for(int dia=1;dia<=31;dia++) {
 			LocalDate fecha=LocalDate.of(2024, 10, dia);
-			if(dia%6!=0&&dia%7!=0&&dia%5!=0) // saca 8 dias de los 31 del mes por los fin dde semana(6,7,12,14,18,21,24,28,30)=22 dias de clase en el mes
+			if(dia%6!=0&&dia%7!=0&&dia%5!=0) // saca 8 dias de los 31 del mes por los fin dde semana+ las faltas(6,7,12,14,18,21,24,28,30)=17 presencias en el mes
 				alumno.asistirAClase(curso, fecha);	
 			else if (dia%5==0&&dia!=30)// simula faltaslos dias 5,10,15,20 y 25-total faltas en el mes :5
 				alumno.faltarAClase(curso, fecha);

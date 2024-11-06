@@ -21,17 +21,9 @@ public class Alumno extends Persona implements Asistencia {
 		this.cursosAprobados = new HashSet<Curso>();
 		this.asistencia = new HashMap<LocalDate, Boolean>();
 	}
-
-	/**
-	 * @return the asistirAClase
-	 */
 	public Boolean getAsistirAClase() {
 		return asistirAClase;
 	}
-
-	/**
-	 * @param asistirAClase the asistirAClase to set
-	 */
 	public void setAsistirAClase(Boolean asistirAClase) {
 		this.asistirAClase = asistirAClase;
 	}
@@ -50,18 +42,7 @@ public class Alumno extends Persona implements Asistencia {
 
 	public void setCursosAprobados(HashSet<Curso> cursosAprobados) {
 		this.cursosAprobados = cursosAprobados;
-	}
-
-	public Boolean registrarAsistencia(LocalDate fecha) {
-		Boolean asistenciaRegistrada = false;
-		if (asistencia.get(fecha) == null) {
-			this.asistir();
-			asistencia.put(fecha, asistirAClase);
-			asistenciaRegistrada = true;
-		}
-
-		return asistenciaRegistrada;
-	}
+	}	
 
 	private void faltar() {
 		this.setAsistirAClase(false);
@@ -70,6 +51,16 @@ public class Alumno extends Persona implements Asistencia {
 
 	private void asistir() {
 		this.setAsistirAClase(true);
+	}
+	
+	public Boolean registrarAsistencia(LocalDate fecha) {
+		Boolean asistenciaRegistrada = false;
+		if (asistencia.get(fecha) == null) {
+			this.asistir();
+			asistencia.put(fecha, asistirAClase);
+			asistenciaRegistrada = true;
+		}
+		return asistenciaRegistrada;
 	}
 
 	@Override
@@ -91,21 +82,21 @@ public class Alumno extends Persona implements Asistencia {
 			throw new AlumnoInexistenteException("Alumno no se encuantra registrado en el curso de referencia");
 		return this.asistirAClase;
 	}
+	@Override
 
 	public Double calcularPorcentajeAsistencia() {
 		Double porcentajeAsistencia = 0.0;
-		
 		Integer asistencias = 0;
-		
 		for (Boolean value : this.getAsistencia().values()) {
 			if (value)
 				asistencias++;
-
 		}
 		porcentajeAsistencia = (asistencias * 100.0) / this.getAsistencia().size();
-		return porcentajeAsistencia;
-		// TODO Auto-generated method stub
+		return porcentajeAsistencia;		
 
 	}
+
+	
+
 
 }

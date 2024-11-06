@@ -12,6 +12,7 @@ import ar.edu.unlam.instituto.exceptions.EdadAlumnoFueraDeRangoException;
 import ar.edu.unlam.instituto.interfaces.Jardin;
 import ar.edu.unlam.instituto.persona.Alumno;
 import ar.edu.unlam.instituto.persona.Docente;
+import ar.edu.unlam.instituto.persona.OrdenPorDni;
 import ar.edu.unlam.instituto.persona.Persona;
 
 public class Sala extends Curso implements Jardin {
@@ -19,12 +20,14 @@ public class Sala extends Curso implements Jardin {
 	Set<Alumno> listaAlumnosSalaVerde;
 	Set<Alumno> listaAlumnosSalaAzul;
 	Set<Alumno> listaAlumnosSalaRoja;
+	Set<Alumno>listaOrdenadaPorDni;
 
 	public Sala(String codigoCurso, Integer cicloLectivo, Nivel nivel) {
 		super(codigoCurso, cicloLectivo, nivel);
 		this.listaAlumnosSalaVerde = new TreeSet<Alumno>();
 		this.listaAlumnosSalaAzul = new TreeSet<Alumno>();
 		this.listaAlumnosSalaRoja = new TreeSet<Alumno>();
+		this.listaOrdenadaPorDni=new TreeSet<Alumno>(new OrdenPorDni());
 	}
 
 	public Set<Alumno> getListaAlumnosSalaVerde() {
@@ -49,6 +52,20 @@ public class Sala extends Curso implements Jardin {
 
 	public void setListaAlumnosSalaRoja(Set<Alumno> listaAlumnosSalaRoja) {
 		this.listaAlumnosSalaRoja = listaAlumnosSalaRoja;
+	}
+
+	/**
+	 * @return the listaOrdenadaPorDni
+	 */
+	public Set<Alumno> getListaOrdenadaPorDni() {
+		return listaOrdenadaPorDni;
+	}
+
+	/**
+	 * @param listaOrdenadaPorDni the listaOrdenadaPorDni to set
+	 */
+	public void setListaOrdenadaPorDni(Set<Alumno> listaOrdenadaPorDni) {
+		this.listaOrdenadaPorDni = listaOrdenadaPorDni;
 	}
 
 	@Override
@@ -142,6 +159,11 @@ public class Sala extends Curso implements Jardin {
 
 		return docenteAsignado;
 
+	}
+
+	public void ordenarAlumnosPorDni() {
+		this.listaOrdenadaPorDni.addAll(listaAlumnosPorCurso);
+		
 	}
 
 }
