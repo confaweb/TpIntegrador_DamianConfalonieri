@@ -15,6 +15,7 @@ import ar.edu.unlam.instituto.enums.Experiencia;
 import ar.edu.unlam.instituto.enums.Nivel;
 import ar.edu.unlam.instituto.exceptions.AlumnoInexistenteException;
 import ar.edu.unlam.instituto.exceptions.EdadAlumnoFueraDeRangoException;
+import ar.edu.unlam.instituto.exceptions.FechaRepetidaException;
 import ar.edu.unlam.instituto.interfaces.Jardin;
 import ar.edu.unlam.instituto.interfaces.Primaria;
 import ar.edu.unlam.instituto.interfaces.Secundaria;
@@ -178,7 +179,7 @@ public class Entrga_4DisenioClases {
 		
 	}
 	@Test // #7
-	public void queUnAlumnoPuedaRegistrarPresenteSuAsistenciaAClase() throws EdadAlumnoFueraDeRangoException,AlumnoInexistenteException  {
+	public void queUnAlumnoPuedaRegistrarPresenteSuAsistenciaAClase() throws EdadAlumnoFueraDeRangoException,AlumnoInexistenteException, FechaRepetidaException  {
 		// INCIO
 		
 		Alumno alumno;
@@ -224,7 +225,7 @@ public class Entrga_4DisenioClases {
 	}
 
 	@Test // #9
-	public void queUnAlumnoPuedaCalculaSuAsistencia() throws EdadAlumnoFueraDeRangoException, AlumnoInexistenteException  {
+	public void queUnAlumnoPuedaCalculaSuAsistencia() throws EdadAlumnoFueraDeRangoException, AlumnoInexistenteException, FechaRepetidaException  {
 		// INCIO
 		
 		Alumno alumno;
@@ -252,17 +253,41 @@ public class Entrga_4DisenioClases {
 		
 	}
 
-	private void simuladorAsistenciaMensual(Curso curso, Alumno alumno) throws AlumnoInexistenteException, EdadAlumnoFueraDeRangoException {		
+	private void simuladorAsistenciaMensual(Curso curso, Alumno alumno) throws AlumnoInexistenteException, EdadAlumnoFueraDeRangoException, FechaRepetidaException {		
 		
 		for(int dia=1;dia<=31;dia++) {
 			LocalDate fecha=LocalDate.of(2024, 10, dia);
 			if(dia%6!=0&&dia%7!=0&&dia%5!=0) // saca 8 dias de los 31 del mes por los fin dde semana+ las faltas(6,7,12,14,18,21,24,28,30)=17 presencias en el mes
 				alumno.asistirAClase(curso, fecha);	
 			else if (dia%5==0&&dia!=30)// simula faltaslos dias 5,10,15,20 y 25-total faltas en el mes :5
-				alumno.faltarAClase(curso, fecha);
-			
-		}
+				alumno.faltarAClase(curso, fecha);			
+		}		
 		
+	}
+	@Test // #7
+	(expected= FechaRepetidaException.class)
+	public void queUnAlumnoNoPuedaRegistrarPresenteSuAsistenciaAClaseDosvecesElMismoDia() throws EdadAlumnoFueraDeRangoException,AlumnoInexistenteException,FechaRepetidaException  {
+		// INCIO
+		
+		Alumno alumno;
+		Curso curso;
+		String  nombre = "Facundo", apellido = "Colapinto",codigoCurso="j01";
+		Integer  dni = 111111,cicloLectivo=LocalDate.now().getYear();
+		Boolean presente = true;
+		LocalDate fechaDeNacimiento = LocalDate.of(2020, 10, 10),fecha=LocalDate.now();
+		Nivel nivel=Nivel.AZUL;
+		
+		// PREPARACION
+		
+		alumno = new Alumno(dni, nombre, apellido, fechaDeNacimiento);
+		curso=new Sala(codigoCurso, cicloLectivo, nivel);
+		curso.asignarCursoParaAlumno(alumno);
+		assertTrue(alumno.asistirAClase(curso,fecha));
+		assertTrue(alumno.asistirAClase(curso,fecha));
+		// VALIDACION
+		Boolean ve=true;
+		Boolean vo = alumno.getAsistencia().get(fecha);
+		assertEquals(ve,vo);
 	}
 
 

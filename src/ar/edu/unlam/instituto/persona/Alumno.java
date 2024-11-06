@@ -8,6 +8,7 @@ import java.util.Set;
 
 import ar.edu.unlam.instituto.cursos.Curso;
 import ar.edu.unlam.instituto.exceptions.AlumnoInexistenteException;
+import ar.edu.unlam.instituto.exceptions.FechaRepetidaException;
 import ar.edu.unlam.instituto.interfaces.Asistencia;
 
 public class Alumno extends Persona implements Asistencia {
@@ -63,15 +64,21 @@ public class Alumno extends Persona implements Asistencia {
 		return asistenciaRegistrada;
 	}
 
+
 	@Override
-	public Boolean asistirAClase(Curso curso, LocalDate fecha) throws AlumnoInexistenteException {
-		this.asistir();
-		if (curso.getListaAlumnosPorCurso().contains(this) && asistencia.get(fecha) == null) {
-			asistencia.put(fecha, this.asistirAClase);
-		} else
-			throw new AlumnoInexistenteException("Alumno no se encuantra registrado en el curso de referencia");
-		return this.asistirAClase;
+	public Boolean asistirAClase(Curso curso, LocalDate fecha) throws AlumnoInexistenteException, FechaRepetidaException {
+	     this.asistir();
+	    if (!curso.getListaAlumnosPorCurso().contains(this)) {
+	        throw new AlumnoInexistenteException("El alumno no está registrado en el curso.");
+	    }
+	    if (asistencia.containsKey(fecha)) {
+	        throw new FechaRepetidaException("El alumno ya registró asistencia para esta fecha.");
+	    }
+	    else
+	    asistencia.put(fecha, this.asistirAClase);
+	    return this.asistirAClase;
 	}
+
 
 	@Override
 	public Boolean faltarAClase(Curso curso, LocalDate fecha) throws AlumnoInexistenteException {
