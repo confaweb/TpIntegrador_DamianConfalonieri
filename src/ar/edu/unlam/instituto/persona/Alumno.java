@@ -74,22 +74,38 @@ public class Alumno extends Persona implements Asistencia {
 
 	@Override
 	public Boolean asistirAClase(Curso curso, LocalDate fecha) throws AlumnoInexistenteException {
-		this.asistir();		
-		if (curso.getListaAlumnosPorCurso().contains(this) && asistencia.get(fecha) == null) {
-			asistencia.put(fecha, this.asistirAClase);
-		} else
-			throw new AlumnoInexistenteException("Alumno no se encuantra registrado en el curso de referencia");
-		return this.asistirAClase;	
-		}
-
-	@Override
-	public Boolean faltarAClase(Curso curso, LocalDate fecha) throws AlumnoInexistenteException {
-		this.faltar();		
+		this.asistir();
 		if (curso.getListaAlumnosPorCurso().contains(this) && asistencia.get(fecha) == null) {
 			asistencia.put(fecha, this.asistirAClase);
 		} else
 			throw new AlumnoInexistenteException("Alumno no se encuantra registrado en el curso de referencia");
 		return this.asistirAClase;
+	}
+
+	@Override
+	public Boolean faltarAClase(Curso curso, LocalDate fecha) throws AlumnoInexistenteException {
+		this.faltar();
+		if (curso.getListaAlumnosPorCurso().contains(this) && asistencia.get(fecha) == null) {
+			asistencia.put(fecha, this.asistirAClase);
+		} else
+			throw new AlumnoInexistenteException("Alumno no se encuantra registrado en el curso de referencia");
+		return this.asistirAClase;
+	}
+
+	public Double calcularPorcentajeAsistencia() {
+		Double porcentajeAsistencia = 0.0;
+		
+		Integer asistencias = 0;
+		
+		for (Boolean value : this.getAsistencia().values()) {
+			if (value)
+				asistencias++;
+
+		}
+		porcentajeAsistencia = (asistencias * 100.0) / this.getAsistencia().size();
+		return porcentajeAsistencia;
+		// TODO Auto-generated method stub
+
 	}
 
 }

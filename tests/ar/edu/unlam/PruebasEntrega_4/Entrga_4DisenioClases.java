@@ -200,7 +200,7 @@ public class Entrga_4DisenioClases {
 		Boolean vo = alumno.getAsistencia().get(fecha);
 		assertEquals(ve,vo);
 	}
-	@Test // #7
+	@Test // #8
 	public void queUnAlumnoPuedaRegistrarAusenteSuAsistenciaAClase() throws EdadAlumnoFueraDeRangoException,AlumnoInexistenteException  {
 		// INCIO
 		
@@ -222,40 +222,48 @@ public class Entrga_4DisenioClases {
 		Boolean vo = alumno.getAsistencia().get(fecha);
 		assertEquals(ve,vo);
 	}
-//	@Test // #8
-//	public void queUnAlumnoPuedaAsistirAClase()  {
-//		// INCIO
-//		
-//		Alumno alumno;
-//		String  nombre = "Facundo", apellido = "Colapinto";
-//		Integer  dni = 111111;
-//		Boolean presente = true;
-//		LocalDate fechaDeNacimiento = LocalDate.of(2020, 10, 10),fecha=LocalDate.now();
-//		
-//		// PREPARACION
-//		
-//		alumno = new Alumno(dni, nombre, apellido, fechaDeNacimiento);
-//		// VALIDACION
-//		assertTrue(alumno.asistirAClase(fecha));
-//		
-//	}
-//	@Test // #9
-//	public void queUnAlumnoPuedaCalculaSuAsistencia()  {
-//		// INCIO
-//		
-//		Alumno alumno;
-//		String  nombre = "Facundo", apellido = "Colapinto";
-//		Integer  dni = 111111;
-//		Boolean presente = true;
-//		LocalDate fechaDeNacimiento = LocalDate.of(2020, 10, 10),fecha=LocalDate.now();
-//		
-//		// PREPARACION
-//		
-//		alumno = new Alumno(dni, nombre, apellido, fechaDeNacimiento);
-//		// VALIDACION
-//		assertTrue(alumno.registrarAsistencia(fecha,presente));
-//		
-//	}
+
+	@Test // #9
+	public void queUnAlumnoPuedaCalculaSuAsistencia() throws EdadAlumnoFueraDeRangoException, AlumnoInexistenteException  {
+		// INCIO
+		
+		Alumno alumno;
+		Curso curso;
+		String  nombre = "Facundo", apellido = "Colapinto",codigoCurso="j01";
+		Integer  dni = 111111,cicloLectivo=LocalDate.now().getYear();
+		LocalDate fechaDeNacimiento = LocalDate.of(2020, 10, 10),fecha=LocalDate.now();
+		Nivel nivel=Nivel.AZUL;
+		
+		// PREPARACION
+		
+		alumno = new Alumno(dni, nombre, apellido, fechaDeNacimiento);
+		curso=new Sala(codigoCurso, cicloLectivo, nivel);
+		curso.asignarCursoParaAlumno(alumno);
+		simuladorAsistenciaMensual(curso,alumno);
+		alumno.calcularPorcentajeAsistencia();
+		
+		// VALIDACION
+		Integer ve=22;
+		Integer vo = alumno.getAsistencia().size();
+		assertEquals(ve,vo);
+		Double ve1=77.27;
+		Double vo1=alumno.calcularPorcentajeAsistencia();
+		assertEquals(ve1,vo1,.01);
+		
+	}
+
+	private void simuladorAsistenciaMensual(Curso curso, Alumno alumno) throws AlumnoInexistenteException, EdadAlumnoFueraDeRangoException {		
+		
+		for(int dia=1;dia<=31;dia++) {
+			LocalDate fecha=LocalDate.of(2024, 10, dia);
+			if(dia%6!=0&&dia%7!=0&&dia%5!=0) // saca 8 dias de los 31 del mes por los fin dde semana(6,7,12,14,18,21,24,28,30)=22 dias de clase en el mes
+				alumno.asistirAClase(curso, fecha);	
+			else if (dia%5==0&&dia!=30)// simula faltaslos dias 5,10,15,20 y 25-total faltas en el mes :5
+				alumno.faltarAClase(curso, fecha);
+			
+		}
+		
+	}
 
 
 
